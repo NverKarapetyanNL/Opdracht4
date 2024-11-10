@@ -24,14 +24,23 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         $this->logger = $logger;
     }
 
+    public function supports(Request $request): bool
+    {
+        $this->logger->info('Checking if the authenticator supports the request', [
+            'route' => $request->attributes->get('_route'),
+            'method' => $request->getMethod()
+        ]);
+        return $request->attributes->get('_route') === 'login' && $request->isMethod('POST');
+    }
+
     public function authenticate(Request $request): Passport
     {
-        $email = $request->request->get('email', '');
-        $this->logger->info('Authenticating user', ['email' => $email]);
+        $username = $request->request->get('username', '');
+        $password = $request->request->get('password', '');
 
         return new Passport(
-            new UserBadge($email),
-            new PasswordCredentials($request->request->get('password', '')),
+            new UserBadge($username),
+            new PasswordCredentials($password),
             [
                 new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')),
             ]

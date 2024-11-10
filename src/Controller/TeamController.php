@@ -3,13 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\Team;
+use App\Form\TeamType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
+
+// Zorg ervoor dat je een formulier hebt waarin spelers worden toegevoegd
+// Formulier voor spelers
 
 class TeamController extends AbstractController
 {
@@ -18,22 +22,28 @@ class TeamController extends AbstractController
     {
         $team = new Team();
         $form = $this->createFormBuilder($team)
-            ->add('team_name', TextType::class)
+            ->add('teamName', TextType::class)
             ->add('save', SubmitType::class, ['label' => 'Create Team'])
             ->getForm();
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($team->getPlayers() as $player) {
+                $player->setTeam($team);
+            }
+
             $team->setUser($this->getUser());
             $entityManager->persist($team);
             $entityManager->flush();
 
-            return $this->redirectToRoute('team_list');
+            return $this->redirectToRoute('team_new');
+
         }
+        $teams = $entityManager->getRepository(Team::class)->findAll();
 
         return $this->render('team/new.html.twig', [
             'form' => $form->createView(),
+            'teams' => $teams,
         ]);
     }
 
@@ -57,13 +67,17 @@ class TeamController extends AbstractController
         }
 
         $form = $this->createFormBuilder($team)
-            ->add('team_name', TextType::class)
+            ->add('teamName', TextType::class)
             ->add('save', SubmitType::class, ['label' => 'Update Team'])
             ->getForm();
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($team->getPlayers() as $player) {
+                $player->setTeam($team); // Zorg dat de relatie met het team intact blijft
+            }
+
             $entityManager->flush();
 
             return $this->redirectToRoute('team_list');
@@ -85,6 +99,7 @@ class TeamController extends AbstractController
 
         $entityManager->remove($team);
         $entityManager->flush();
+        $this->addFlash('success', 'Team successfully deleted.');
 
         return $this->redirectToRoute('team_list');
     }

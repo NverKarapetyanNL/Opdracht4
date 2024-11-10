@@ -6,6 +6,9 @@
     <div class="container mt-4">
         <h1>Welkom, {{ user.username }}</h1>
         <p>Email: {{ user.email }}</p>
-        <p>Rol: {{ user.role }}</p>
+        <p>Rol: {{ user.roles ? user.roles|join(', ') : 'Geen rollen' }}</p>
+
+
+        <p>Als je een team wil maken, klik dan op 'Teams' in de navigatiebalk.</p>
     </div>
 {% endblock %}

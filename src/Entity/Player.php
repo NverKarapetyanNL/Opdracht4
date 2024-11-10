@@ -17,6 +17,7 @@ class Player
     private $playerName;
 
     #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'players')]
+    #[ORM\JoinColumn(nullable: false)]
     private $team;
 
     /**

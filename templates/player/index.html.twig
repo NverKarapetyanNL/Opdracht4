@@ -1,20 +1,52 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Hello PlayerController!{% endblock %}
-
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <div class="container mt-4">
+        <h1 class="mb-4">Create a new Player</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <form action="{{ path('app_player') }}" method="post">
+                            <div class="form-group">
+                                <input type="text" id="playerName" name="playerName" class="form-control" placeholder="Player Name" required>
+                            </div>
+                            <div class="form-group mt-3">
+                                <label for="team_id"></label>
+                                <select id="team_id" name="team_id" class="form-control">
+                                    {% for team in teams %}
+                                        <option value="{{ team.id }}">{{ team.teamName }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-3">Create Player</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/nvera/Bureaublad/Webtech2/Opdracht4/my_project/src/Controller/PlayerController.php</code></li>
-        <li>Your template at <code>C:/Users/nvera/Bureaublad/Webtech2/Opdracht4/my_project/templates/player/index.html.twig</code></li>
-    </ul>
-</div>
+        <h2 class="mt-5">List of Players</h2>
+        <div class="row">
+            <div class="col-md-12">
+                {% if players|length > 0 %}
+                    <ul class="list-group">
+                        {% for player in players %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ player.playerName }}
+                                (Team:
+                                {% if player.team %}
+                                    {{ player.team.teamName }}
+                                {% else %}
+                                    No team assigned
+                                {% endif %}
+                                )
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No players available.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 {% endblock %}
