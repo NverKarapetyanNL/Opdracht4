@@ -8,7 +8,8 @@
                     <div class="card-body">
                         <form action="{{ path('app_player') }}" method="post">
                             <div class="form-group">
-                                <input type="text" id="playerName" name="playerName" class="form-control" placeholder="Player Name" required>
+                                <input type="text" id="playerName" name="playerName" class="form-control"
+                                       placeholder="Player Name" required>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="team_id"></label>
@@ -40,7 +41,12 @@
                                     No team assigned
                                 {% endif %}
                                 )
+                                <span>
+{#                                <a href="{{ path('team_edit', {id: team.id}) }}" class="btn btn-sm btn-outline-primary">Edit</a> #}
+                            <a href="{{ path('player_delete', {id: player.id}) }}" class="btn btn-sm btn-outline-danger"
+                               onclick="return confirm('Are you sure?')">Delete</a></span>
                             </li>
+
                         {% endfor %}
                     </ul>
                 {% else %}

@@ -49,4 +49,20 @@ class PlayerController extends AbstractController
             'players' => $players, // Voeg spelers toe aan de template-data
         ]);
     }
+
+    #[Route('/player/delete/{id}', name: 'player_delete')]
+    public function delete(int $id, EntityManagerInterface $entityManager): Response
+    {
+        $player = $entityManager->getRepository(Player::class)->find($id);
+
+        if (!$player) {
+            throw $this->createNotFoundException('No player found for id ' . $id);
+        }
+
+        $entityManager->remove($player);
+        $entityManager->flush();
+        $this->addFlash('success', 'Player successfully deleted.');
+
+        return $this->redirectToRoute('app_player');
+    }
 }
