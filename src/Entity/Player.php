@@ -1,5 +1,5 @@
 <?php
-
+// src/Entity/Player.php
 namespace App\Entity;
 
 use App\Repository\PlayerRepository;
@@ -10,30 +10,64 @@ class Player
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: 'integer')]
+    private $id;
 
-    #[ORM\Column(length: 255)]
-    private ?string $player_name = null;
+    #[ORM\Column(type: 'string', length: 255)]
+    private $playerName;
 
-    #[ORM\ManyToOne(targetEntity: Team::class)]
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'players')]
     private $team;
 
-
-    public function getId(): ?int
+    /**
+     * @return mixed
+     */
+    public function getId()
     {
         return $this->id;
     }
 
-    public function getPlayerName(): ?string
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
     {
-        return $this->player_name;
+        $this->id = $id;
     }
 
-    public function setPlayerName(string $player_name): static
+    /**
+     * @return mixed
+     */
+    public function getPlayerName()
     {
-        $this->player_name = $player_name;
-
-        return $this;
+        return $this->playerName;
     }
+
+    /**
+     * @param mixed $playerName
+     */
+    public function setPlayerName($playerName): void
+    {
+        $this->playerName = $playerName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTeam()
+    {
+        return $this->team;
+    }
+
+    /**
+     * @param mixed $team
+     */
+    public function setTeam($team): void
+    {
+        $this->team = $team;
+    }
+
+
+
+// Getters and setters
 }
