@@ -12,19 +12,26 @@
         {% endif %}
 
         <form action="{{ path('login') }}" method="post">
-            <div class="mb-3">
+            <div class="mb-3 row">
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                <label for="username" class="form-label">Username:</label>
-                <input type="text" id="username" name="username" value="{{ last_username }}" class="form-control"
-                       required autofocus>
+                <label for="username" >Username:</label>
+                <div class="col-sm-4">
+                    <input type="text" id="username" name="username" value="{{ last_username }}" class="form-control" required autofocus>
+                </div>
             </div>
 
-            <div class="mb-3">
-                <label for="password" class="form-label">Password:</label>
-                <input type="password" id="password" name="password" class="form-control" required>
+            <div class="mb-3 row">
+                <label for="password" >Password:</label>
+                <div class="col-sm-4">
+                    <input type="password" id="password" name="password" class="form-control" required>
+                </div>
             </div>
 
-            <button type="submit" class="btn btn-primary">Login</button>
+            <div class="row">
+                <div class="col-sm-4 ">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+            </div>
         </form>
     </div>
 {% endblock %}
