@@ -36,11 +36,10 @@ class TeamController extends AbstractController
             $entityManager->persist($team);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_player');
+            return $this->redirectToRoute('team_new');
 
         }
-        $user = $this->getUser();
-        $teams = $entityManager->getRepository(Team::class)->findBy(['user' => $user]);
+        $teams = $entityManager->getRepository(Team::class)->findAll();
 
         return $this->render('team/new.html.twig', [
             'form' => $form->createView(),
@@ -51,8 +50,7 @@ class TeamController extends AbstractController
     #[Route('/team', name: 'team_list')]
     public function list(EntityManagerInterface $entityManager): Response
     {
-        $user = $this->getUser();
-        $teams = $entityManager->getRepository(Team::class)->findBy(['user' => $user]);
+        $teams = $entityManager->getRepository(Team::class)->findAll();
 
         return $this->render('team/list.html.twig', [
             'teams' => $teams,
@@ -82,7 +80,7 @@ class TeamController extends AbstractController
 
             $entityManager->flush();
 
-            return $this->redirectToRoute('team_new');
+            return $this->redirectToRoute('team_list');
         }
 
         return $this->render('team/edit.html.twig', [
@@ -103,6 +101,6 @@ class TeamController extends AbstractController
         $entityManager->flush();
         $this->addFlash('success', 'Team successfully deleted.');
 
-        return $this->redirectToRoute('team_new');
+        return $this->redirectToRoute('team_list');
     }
 }

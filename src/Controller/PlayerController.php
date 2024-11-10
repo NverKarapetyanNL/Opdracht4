@@ -17,9 +17,9 @@ class PlayerController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $player = new Player();
-        $user = $this->getUser();
-        $teams = $entityManager->getRepository(Team::class)->findBy(['user' => $user]);
-        $players = $entityManager->getRepository(Player::class)->findBy(['team' => $teams]);
+
+        $teams = $entityManager->getRepository(Team::class)->findAll();
+        $players = $entityManager->getRepository(Player::class)->findAll(); // Haal alle spelers op
 
         if ($request->isMethod('POST')) {
             $playerName = $request->request->get('playerName');
@@ -46,7 +46,7 @@ class PlayerController extends AbstractController
 
         return $this->render('player/index.html.twig', [
             'teams' => $teams,
-            'players' => $players,
+            'players' => $players, // Voeg spelers toe aan de template-data
         ]);
     }
 

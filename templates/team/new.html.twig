@@ -3,7 +3,6 @@
 {% block body %}
     <div class="container mt-4">
         <h1 class="mb-4">Create a new Team</h1>
-        <p>Op deze pagina kunt u teams maken, wijzigen en verwijderen.</p>
         <div class="row">
             <div class="col-md-6">
                 <div class="card">
@@ -25,28 +24,17 @@
         <div class="row">
             <div class="col-md-6">
                 <ul class="list-group">
-                    {% if teams|length > 0 %}
-                        {% for team in teams %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                {{ team.teamName }}
-                                <span>
+                    {% for team in teams %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ team.teamName }}
+                            <span>
                                 <a href="{{ path('team_edit', {id: team.id}) }}" class="btn btn-sm btn-outline-primary">Edit</a>
-                                <a href="{{ path('team_delete', {id: team.id}) }}" class="btn btn-sm btn-outline-danger"
-                                   onclick="return confirm('Are you sure?')">Delete</a>
+                                <a href="{{ path('team_delete', {id: team.id}) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure?')">Delete</a>
                             </span>
-                            </li>
-
-                        {% endfor %}
-                    {% else %}
-                        <p>No teams available.</p>
-                    {% endif %}
+                        </li>
+                    {% endfor %}
                 </ul>
-
             </div>
-
         </div>
-
     </div>
-
-
 {% endblock %}
